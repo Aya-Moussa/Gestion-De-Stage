@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DOMAIN.Commands
 {
-    class DeleteOffreDeStageCommand
+    class DeleteGeneric
     {
     }
 }

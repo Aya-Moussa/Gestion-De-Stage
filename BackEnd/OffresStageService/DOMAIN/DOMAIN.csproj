@@ -9,6 +9,7 @@
     <Folder Include="DTOs\" />
     <Folder Include="Handlers\" />
     <Folder Include="Interface\" />
+    <Folder Include="Queries\" />
   </ItemGroup>
 
   <ItemGroup>
