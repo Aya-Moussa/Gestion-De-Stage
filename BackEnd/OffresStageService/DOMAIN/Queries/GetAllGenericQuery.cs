@@ -8,7 +8,7 @@ using System.Text;
 
 namespace DOMAIN.Queries
 {
-    class GetAllGenericQuery<T> : IRequest<IEnumerable<T>> where T : class
+    public class GetAllGenericQuery<T> : IRequest<IEnumerable<T>> where T : class
     {
         public Expression<Func<T,bool>> Condition { get; set; }
         public Func<IQueryable<T>, IIncludableQueryable<T, object>> Includes { get; set; }

@@ -1,4 +1,5 @@
 ﻿using DOMAIN.Interface;
+using DOMAIN.Queries;
 using MediatR;
 using System;
 using System.Collections.Generic;
