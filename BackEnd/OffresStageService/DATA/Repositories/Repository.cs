@@ -242,6 +242,11 @@ namespace DATA.Repositories
             Context.SaveChanges();
             return "delete done";
         }
+
+        public object Remove(object id)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
     }
 }

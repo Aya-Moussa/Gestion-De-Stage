@@ -17,6 +17,7 @@ namespace DOMAIN.Interface
         string Update(T entity);
         Task<IEnumerable<T>> GetListAsync(Expression<Func<T, bool>> condition = null,
             Func<IQueryable<T>, IIncludableQueryable<T, object>> includes = null);
+        object Remove(object id);
         string Removeobject(T entity);
         IEnumerable<T> GetByID(Guid id);
         T GetById(Guid id);

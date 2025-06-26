@@ -13,6 +13,13 @@ using System.Threading.Tasks;
 using Microsoft.OpenApi.Models;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using MediatR;
+using DOMAIN.Models;
+using DOMAIN.Queries;
+using DOMAIN.Handlers;
+using DATA.Repositories;
+using DOMAIN.Interface;
+using AutoMapper;
 
 namespace OffresStageService
 {
@@ -40,6 +47,12 @@ namespace OffresStageService
                     Description = "API documentation for My Project"
                 });
             });
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddMediatR(typeof(Startup));
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+
+            services.AddTransient(typeof(IRequestHandler<GetAllGenericQuery<Stage>, IEnumerable<Stage>>), typeof(GetAllGenericHandlers<Stage>));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
