@@ -4,14 +4,16 @@ using DATA.ContextDb;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DATA.Migrations
 {
     [DbContext(typeof(AuthenContext))]
-    partial class AuthenContextModelSnapshot : ModelSnapshot
+    [Migration("20250630094125_mg1")]
+    partial class mg1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

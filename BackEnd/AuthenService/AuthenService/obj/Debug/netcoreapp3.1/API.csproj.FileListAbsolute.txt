@@ -158,3 +158,8 @@ C:\Users\user\Desktop\Aya\PFA\GestionDeStage\BackEnd\AuthenService\AuthenService
 C:\Users\user\Desktop\Aya\PFA\GestionDeStage\BackEnd\AuthenService\AuthenService\obj\Debug\netcoreapp3.1\API.dll
 C:\Users\user\Desktop\Aya\PFA\GestionDeStage\BackEnd\AuthenService\AuthenService\obj\Debug\netcoreapp3.1\API.pdb
 C:\Users\user\Desktop\Aya\PFA\GestionDeStage\BackEnd\AuthenService\AuthenService\obj\Debug\netcoreapp3.1\API.genruntimeconfig.cache
+C:\Users\user\Desktop\Aya\PFA\GestionDeStage\BackEnd\AuthenService\AuthenService\bin\Debug\netcoreapp3.1\ocelot.json
+C:\Users\user\Desktop\Aya\PFA\GestionDeStage\BackEnd\AuthenService\AuthenService\bin\Debug\netcoreapp3.1\FluentValidation.dll
+C:\Users\user\Desktop\Aya\PFA\GestionDeStage\BackEnd\AuthenService\AuthenService\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.MiddlewareAnalysis.dll
+C:\Users\user\Desktop\Aya\PFA\GestionDeStage\BackEnd\AuthenService\AuthenService\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DiagnosticAdapter.dll
+C:\Users\user\Desktop\Aya\PFA\GestionDeStage\BackEnd\AuthenService\AuthenService\bin\Debug\netcoreapp3.1\Ocelot.dll

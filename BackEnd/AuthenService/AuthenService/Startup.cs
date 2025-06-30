@@ -16,6 +16,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
+using Ocelot.DependencyInjection;
 
 namespace AuthenService
 {
@@ -51,6 +52,8 @@ namespace AuthenService
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey123"))
                 };
             });
+            //Ocelot configuration
+            services.AddOcelot();
 
             // Swagger configuration
             services.AddSwaggerGen(c =>
@@ -132,7 +135,8 @@ namespace AuthenService
             app.UseCors("AllowAngularDevClient");
 
             app.UseAuthentication();
-            app.UseAuthorization();
+           
+
 
             // Swagger UI middleware
             app.UseSwagger();

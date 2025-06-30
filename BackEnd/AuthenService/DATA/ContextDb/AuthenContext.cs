@@ -1,8 +1,6 @@
 ﻿using DOMAIN.Model;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace DATA.ContextDb
 {
@@ -15,9 +13,18 @@ namespace DATA.ContextDb
 
         public DbSet<Utilisateur> Utilisateurs { get; set; }
         public DbSet<RH> RHs { get; set; }
-
         public DbSet<Stagiaire> stagiaires { get; set; }
-        public DbSet<Encadrant> encadrants{ get; set; }
+        public DbSet<Encadrant> encadrants { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Utilisateur>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
+        }
     }
 }
+
+
