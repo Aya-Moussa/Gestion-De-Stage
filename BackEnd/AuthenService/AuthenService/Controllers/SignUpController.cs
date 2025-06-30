@@ -28,7 +28,7 @@ namespace API.Controllers
                 Prenom = dto.Prenom,
                 Email = dto.Email,
                 MotDePasse = dto.MotDePasse,
-                Role = "RH",
+                Role = "Encadrant",
                 Poste = dto.Poste
 
             };
@@ -45,7 +45,7 @@ namespace API.Controllers
                 Prenom = dto.Prenom,
                 Email = dto.Email,
                 MotDePasse = dto.MotDePasse,
-                Role = "Encadrant",
+                Role = "RH",
                 Departement =dto.Departement
 
             };

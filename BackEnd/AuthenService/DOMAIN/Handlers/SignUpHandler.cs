@@ -53,7 +53,7 @@ namespace DOMAIN.Handlers
                 };
                 await _repository.AddRHAsync(rh);
                 r = rh;
-                var token = _repository.GenerateToken(rh);
+                var token = _repository.GenerateToken(r);
                 return token;
             }
             else if (request.Role == "Encadrant")
