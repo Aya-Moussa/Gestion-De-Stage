@@ -19,7 +19,7 @@ namespace API.Controllers
         {
             _mediator = mediator;
         }
-        [HttpPost("SignUp/RH/Encadrant")]
+        [HttpPost("Encadrant")]
         public async Task<IActionResult> SignUpEncadrantViaRH([FromBody] SignUpEncadrantDTO dto)
         {
             var command = new SignUpCommand
@@ -36,7 +36,7 @@ namespace API.Controllers
             var token = await _mediator.Send(command);
             return Ok(token);
         }
-        [HttpPost("SignUp/RH/RH")]
+        [HttpPost("RH")]
         public async Task<IActionResult> SignUpRHViaRH([FromBody] SignUpRHDTO dto)
         {
             var command = new SignUpCommand
@@ -54,7 +54,7 @@ namespace API.Controllers
             return Ok(token);
         }
 
-        [HttpPost("SignUp/Stagiaire")]
+        [HttpPost("Stagiaire")]
         public async Task<IActionResult> SignUpStagiaire([FromBody] SignUpDTO dto)
         {
             var command = new SignUpCommand

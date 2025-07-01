@@ -19,7 +19,7 @@ namespace API.Controllers
             _repository = repository;
         }
 
-        [HttpGet("Exists/{id}")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> UserExists(string id)
         {
             if (!Guid.TryParse(id, out Guid guid))
@@ -28,7 +28,7 @@ namespace API.Controllers
             var user = await _repository.GetUserByIdAsync(guid);
             if (user == null) return NotFound();
 
-            return Ok();
+            return Ok(user);
         }
 
     }
