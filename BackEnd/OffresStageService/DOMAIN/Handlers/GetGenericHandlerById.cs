@@ -16,10 +16,11 @@ namespace DOMAIN.Handlers
         {
             repository = Repository;
         }
-        public Task<T> Handle(GetGenericQueryById<T> request, CancellationToken cancellationToken)
+        public async Task<T> Handle(GetGenericQueryById<T> request, CancellationToken cancellationToken)
         {
-            var result = repository.Get(request.Condition, request.Includes);
-            return Task.FromResult(result);
+            var result = await repository.GetAsync(request.Condition, request.Includes);
+            return result;
         }
     }
 }
+

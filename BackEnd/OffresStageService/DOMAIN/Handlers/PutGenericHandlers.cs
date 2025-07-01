@@ -17,11 +17,12 @@ namespace DOMAIN.Handlers
         {
             repository = Repository;
         }
-        public Task<string> Handle(PutGeneric<T> request, CancellationToken cancellationToken)
+        public async Task<string> Handle(PutGeneric<T> request, CancellationToken cancellationToken)
         {
-            var result = repository.Update(request.Obj);
-            return Task.FromResult(result);
+            var result = await repository.UpdateAsync(request.Obj);
+            return result;
         }
+
 
     }
 }

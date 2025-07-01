@@ -94,14 +94,14 @@ namespace DATA.Repository
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Email),
                 new Claim(ClaimTypes.Role, user.Role),
-                 new Claim("UserId", user.Id.ToString())
+                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
               };
 
             var token = new JwtSecurityToken(
                 issuer: issuer,
                 audience: audience,
                 claims: claims,
-                expires: DateTime.Now.AddHours(1),
+                expires: DateTime.Now.AddDays(1),
                 signingCredentials: creds
             );
 
@@ -152,8 +152,22 @@ namespace DATA.Repository
         {
             throw new NotImplementedException();
         }
+        public async Task<Utilisateur> GetUserByIdAsync(Guid id)
+        {
+            // Try to find the user by ID in all derived tables
+            var user = await _context.Utilisateurs.FindAsync(id);
+            if (user != null) return user;
 
-        
+            user = await _context.RHs.FindAsync(id);
+            if (user != null) return user;
+
+            user = await _context.stagiaires.FindAsync(id);
+            if (user != null) return user;
+
+            user = await _context.encadrants.FindAsync(id);
+            return user;
+        }
+
     }
 }
 

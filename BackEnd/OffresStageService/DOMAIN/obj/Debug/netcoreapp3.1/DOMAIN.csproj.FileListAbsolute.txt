@@ -3,7 +3,6 @@ C:\Users\user\Desktop\Aya\PFA\GestionDeStage\BackEnd\OffresStageService\DOMAIN\b
 C:\Users\user\Desktop\Aya\PFA\GestionDeStage\BackEnd\OffresStageService\DOMAIN\bin\Debug\netcoreapp3.1\DOMAIN.runtimeconfig.dev.json
 C:\Users\user\Desktop\Aya\PFA\GestionDeStage\BackEnd\OffresStageService\DOMAIN\bin\Debug\netcoreapp3.1\DOMAIN.dll
 C:\Users\user\Desktop\Aya\PFA\GestionDeStage\BackEnd\OffresStageService\DOMAIN\bin\Debug\netcoreapp3.1\DOMAIN.pdb
-C:\Users\user\Desktop\Aya\PFA\GestionDeStage\BackEnd\OffresStageService\DOMAIN\obj\Debug\netcoreapp3.1\DOMAIN.csproj.AssemblyReference.cache
 C:\Users\user\Desktop\Aya\PFA\GestionDeStage\BackEnd\OffresStageService\DOMAIN\obj\Debug\netcoreapp3.1\DOMAIN.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\user\Desktop\Aya\PFA\GestionDeStage\BackEnd\OffresStageService\DOMAIN\obj\Debug\netcoreapp3.1\DOMAIN.AssemblyInfoInputs.cache
 C:\Users\user\Desktop\Aya\PFA\GestionDeStage\BackEnd\OffresStageService\DOMAIN\obj\Debug\netcoreapp3.1\DOMAIN.AssemblyInfo.cs
@@ -11,3 +10,4 @@ C:\Users\user\Desktop\Aya\PFA\GestionDeStage\BackEnd\OffresStageService\DOMAIN\o
 C:\Users\user\Desktop\Aya\PFA\GestionDeStage\BackEnd\OffresStageService\DOMAIN\obj\Debug\netcoreapp3.1\DOMAIN.dll
 C:\Users\user\Desktop\Aya\PFA\GestionDeStage\BackEnd\OffresStageService\DOMAIN\obj\Debug\netcoreapp3.1\DOMAIN.pdb
 C:\Users\user\Desktop\Aya\PFA\GestionDeStage\BackEnd\OffresStageService\DOMAIN\obj\Debug\netcoreapp3.1\DOMAIN.genruntimeconfig.cache
+C:\Users\user\Desktop\Aya\PFA\GestionDeStage\BackEnd\OffresStageService\DOMAIN\obj\Debug\netcoreapp3.1\DOMAIN.csproj.AssemblyReference.cache

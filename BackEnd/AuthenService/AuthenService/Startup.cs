@@ -6,17 +6,14 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
-using Ocelot.DependencyInjection;
+using System;
+using System.Text;
 
 namespace AuthenService
 {
@@ -29,10 +26,9 @@ namespace AuthenService
 
         public IConfiguration Configuration { get; }
 
-        // Configure services
         public void ConfigureServices(IServiceCollection services)
         {
-            // JWT Authentication configuration
+            // JWT Authentication
             services.AddAuthentication(opt =>
             {
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -46,25 +42,44 @@ namespace AuthenService
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-
-                    ValidIssuer = "https://localhost:5001",
-                    ValidAudience = "https://localhost:5001",
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey123"))
+                    ClockSkew = TimeSpan.Zero,
+                    ValidIssuer = Configuration["Jwt:Issuer"],
+                    ValidAudience = Configuration["Jwt:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
                 };
-            });
-            //Ocelot configuration
-            services.AddOcelot();
 
-            // Swagger configuration
+            
+            });
+
+            // EF Core DbContext
+            services.AddDbContext<AuthenContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("AuthenContext")));
+
+            // Register repository for all user and data operations
+            services.AddScoped<IRepository, repository>();
+
+            // MediatR
+            services.AddMediatR(typeof(SignUpCommand).Assembly);
+
+            // CORS policy
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAngularDevClient", builder =>
+                {
+                    builder.WithOrigins("http://localhost:4200")
+                           .AllowAnyMethod()
+                           .AllowAnyHeader()
+                           .AllowCredentials();
+                });
+            });
+
+            services.AddControllers();
+
+            // Swagger with JWT support
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Title = "Authentication API",
-                    Version = "v1"
-                });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Authentication API", Version = "v1" });
 
-                // JWT support in Swagger UI
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Name = "Authorization",
@@ -78,78 +93,46 @@ namespace AuthenService
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
                     {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
+                        new OpenApiSecurityScheme {
+                            Reference = new OpenApiReference {
                                 Type = ReferenceType.SecurityScheme,
                                 Id = "Bearer"
                             }
                         },
-                        new string[] {}
+                        Array.Empty<string>()
                     }
                 });
             });
-
-            // Add controllers
-            services.AddControllers();
-
-            // Add EF Core with SQL Server
-            services.AddDbContext<AuthenContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("AuthenContext")));
-
-            // Register repository and MediatR handlers
-            services.AddScoped<IRepository, repository>();
-            services.AddMediatR(typeof(SignUpCommand).Assembly);
-
-            // Configure CORS policy
-            services.AddCors(options =>
-            {
-                options.AddPolicy("AllowAngularDevClient",
-                    builder =>
-                    {
-                        builder.WithOrigins("http://localhost:4200")
-                               .AllowAnyMethod()
-                               .AllowAnyHeader()
-                               .AllowCredentials();
-                    });
-            });
         }
 
-        // Configure HTTP request pipeline
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
-            {
                 app.UseDeveloperExceptionPage();
-                // Do NOT redirect HTTP to HTTPS during development
-            }
             else
-            {
                 app.UseHttpsRedirection();
-            }
 
             app.UseRouting();
 
-            // Use configured CORS policy here
             app.UseCors("AllowAngularDevClient");
 
             app.UseAuthentication();
-           
+            app.UseAuthorization();
 
-
-            // Swagger UI middleware
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Authentication API v1");
-                c.RoutePrefix = ""; // Serve Swagger UI at root (/)
+                c.RoutePrefix = "";
             });
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
+            // Uncomment if using Ocelot gateway
+            // app.UseOcelot().Wait();
         }
     }
 }

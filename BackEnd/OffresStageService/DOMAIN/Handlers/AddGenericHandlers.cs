@@ -17,10 +17,10 @@ namespace DOMAIN.Handlers
         {
             repository = Repository;
         }
-        public Task<string> Handle(PostGeneric<T> request, CancellationToken cancellationToken)
+        public async Task<string> Handle(PostGeneric<T> request, CancellationToken cancellationToken)
         {
-            var result = repository.Add(request.Obj);
-            return Task.FromResult(result);
+            var result = await repository.AddAsync(request.Obj);
+            return result; // Pas besoin de Task.FromResult ici
         }
     }
 }

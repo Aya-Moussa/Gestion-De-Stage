@@ -19,10 +19,10 @@ namespace DOMAIN.Handlers
             repository = Repository;
         }
 
-        public Task<string> Handle(DeleteGeneric<T> request, CancellationToken cancellationToken)
+        public async Task<string> Handle(DeleteGeneric<T> request, CancellationToken cancellationToken)
         {
-            var result = repository.Remove(request.Id);
-            return Task.FromResult(result);
+            var result = await repository.RemoveAsync(request.Id);
+            return result;
         }
     }
 }

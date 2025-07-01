@@ -19,6 +19,7 @@ namespace DOMAIN.Interfaces
         Task AddEncadrant(Encadrant encadrant);
         Task AddRHAsync(RH rh);
         Task AddStagiaireAsync(Stagiaire stagiaire);
+        Task<Utilisateur> GetUserByIdAsync(Guid id);
 
     }
 }

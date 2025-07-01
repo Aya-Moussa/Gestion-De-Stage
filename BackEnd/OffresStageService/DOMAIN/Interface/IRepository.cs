@@ -8,38 +8,31 @@ using System.Threading.Tasks;
 
 namespace DOMAIN.Interface
 {
-    public interface IRepository<T> where T: class
+    public interface IRepository<T> where T : class
     {
-        Task AddAsync(T entity);
+        Task<string> AddAsync(T entity);
         Task AddRangeAsync(IEnumerable<T> entities);
-        Task<T> GetAsync(Expression<Func<T, bool>> condition = null,
-            Func<IQueryable<T>, IIncludableQueryable<T, object>> includes = null);
-        string Update(T entity);
-        Task<IEnumerable<T>> GetListAsync(Expression<Func<T, bool>> condition = null,
-            Func<IQueryable<T>, IIncludableQueryable<T, object>> includes = null);
-        object Remove(object id);
-        string Removeobject(T entity);
-        IEnumerable<T> GetByID(Guid id);
-        T GetById(Guid id);
 
-        IEnumerable<T> ExecuteStoreQueryAsync(String commandText, params object[] parameters);
-        IEnumerable<T> ExecuteStoreQueryAsync(String commandText, Func<IQueryable<T>,
-            IIncludableQueryable<T, object>> includes = null);
-        string Add(T entity);
-        void AddRange(IEnumerable<T> entities);
-
-        T Get(Expression<Func<T, bool>> condition = null,
+        Task<T> GetAsync(
+            Expression<Func<T, bool>> condition = null,
             Func<IQueryable<T>, IIncludableQueryable<T, object>> includes = null);
 
-        IEnumerable<T> GetList(Expression<Func<T, bool>> condition = null,
+        Task<IEnumerable<T>> GetListAsync(
+            Expression<Func<T, bool>> condition = null,
             Func<IQueryable<T>, IIncludableQueryable<T, object>> includes = null);
 
-        IEnumerable<T> ExecuteStoreQuery(String commandText, params object[] parameters);
+        Task<string> UpdateAsync(T entity);
+        Task<string> UpdatePartialAsync(Guid id, Action<T> updateAction);
 
-        IEnumerable<T> ExecuteStoreQuery(String commandText,
+        Task<string> RemoveAsync(Guid id);
+        Task<string> RemoveAsync(T entity);
+        Task RemoveRangeAsync(IEnumerable<T> entities);
+
+        Task<IEnumerable<T>> GetByIdAsync(Guid id);
+
+        Task<IEnumerable<T>> ExecuteStoreQueryAsync(string commandText, params object[] parameters);
+        Task<IEnumerable<T>> ExecuteStoreQueryAsync(
+            string commandText,
             Func<IQueryable<T>, IIncludableQueryable<T, object>> includes = null);
-
-        string Remove(Guid id);
-        void RemoveRange(IEnumerable<T> entites);
     }
 }

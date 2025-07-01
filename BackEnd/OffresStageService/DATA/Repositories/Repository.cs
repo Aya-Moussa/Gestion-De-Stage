@@ -13,240 +13,134 @@ namespace DATA.Repositories
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        private readonly AppDbContext Context;
+        private readonly AppDbContext _context;
 
         public Repository(AppDbContext context)
         {
-            Context = context;
+            _context = context;
         }
 
-        #region Async Functions
-
-        public virtual async Task AddAsync(T entity)
+        public async Task<string> AddAsync(T entity)
         {
             try
             {
-                await Context.Set<T>().AddAsync(entity);
+                await _context.Set<T>().AddAsync(entity);
+                await _context.SaveChangesAsync();
+                return "Add succeeded";
             }
             catch (Exception ex)
             {
-                ex.ToString();
+                return $"Add failed: {ex.Message}";
             }
         }
 
-        public virtual async Task AddRangeAsync(IEnumerable<T> entities)
+        public async Task AddRangeAsync(IEnumerable<T> entities)
         {
-            try
-            {
-                await Context.Set<T>().AddRangeAsync(entities);
-            }
-            catch (Exception e)
-            {
-                var s = e.ToString();
-                throw;
-            }
-
+            await _context.Set<T>().AddRangeAsync(entities);
         }
 
-        public virtual async Task<T> GetAsync(Expression<Func<T, bool>> condition = null, Func<IQueryable<T>, IIncludableQueryable<T, object>> includes = null)
+        public async Task<T> GetAsync(
+            Expression<Func<T, bool>> condition = null,
+            Func<IQueryable<T>, IIncludableQueryable<T, object>> includes = null)
         {
-            try
-            {
-                IQueryable<T> query = Context.Set<T>();
-                if (includes != null)
-                {
-                    query = includes(query);
-                }
-
-                if (condition != null)
-                {
-                    return await query.FirstOrDefaultAsync(condition);
-                }
-
-                return await query.FirstOrDefaultAsync();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-        }
-
-        public virtual async Task<IEnumerable<T>> GetListAsync(Expression<Func<T, bool>> condition = null, Func<IQueryable<T>, IIncludableQueryable<T, object>> includes = null)
-        {
-            IQueryable<T> query = Context.Set<T>();
+            IQueryable<T> query = _context.Set<T>();
             if (includes != null)
-            {
                 query = includes(query);
-            }
 
-            if (condition != null)
-            {
-                return await query.Where(condition).ToListAsync();
-            }
-
-            return await query.ToListAsync();
+            return condition != null
+                ? await query.FirstOrDefaultAsync(condition)
+                : await query.FirstOrDefaultAsync();
         }
 
-        public virtual IEnumerable<T> ExecuteStoreQueryAsync(string commandText, params object[] parameters)
+        public async Task<IEnumerable<T>> GetListAsync(
+            Expression<Func<T, bool>> condition = null,
+            Func<IQueryable<T>, IIncludableQueryable<T, object>> includes = null)
         {
-            throw new NotImplementedException();
-        }
-
-        public virtual IEnumerable<T> ExecuteStoreQueryAsync(string commandText, Func<IQueryable<T>, IIncludableQueryable<T, object>> includes = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-
-        #region Sync Functions
-
-        public string Add(T entity)
-        {
-            string response = "";
-            try
-            {
-                Context.Set<T>().Add(entity);
-                Context.SaveChanges();
-
-                response = "Added done";
-
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                response = "Add Not done , with Exeption \n" + e;
-            }
-            return response;
-        }
-
-
-
-        public void AddRange(IEnumerable<T> entities)
-        {
-            try
-            {
-                Context.Set<T>().AddRange(entities);
-            }
-            catch (Exception e)
-            {
-                var s = e.ToString();
-            }
-        }
-
-
-
-        public IEnumerable<T> ExecuteStoreQuery(string commandText, params object[] parameters)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<T> ExecuteStoreQuery(string commandText, Func<IQueryable<T>, IIncludableQueryable<T, object>> includes = null)
-        {
-            throw new NotImplementedException();
-        }
-
-
-
-        public T Get(Expression<Func<T, bool>> condition = null, Func<IQueryable<T>, IIncludableQueryable<T, object>> includes = null)
-        {
-            try
-            {
-                IQueryable<T> query = Context.Set<T>();
-
-                if (includes != null)
-                {
-                    query = includes(query);
-                }
-
-                if (condition != null)
-                {
-                    return query.FirstOrDefault(condition);
-                }
-
-                return query.FirstOrDefault();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-        }
-
-
-        public IEnumerable<T> GetList(Expression<Func<T, bool>> condition = null, Func<IQueryable<T>, IIncludableQueryable<T, object>> includes = null)
-        {
-            IQueryable<T> query = Context.Set<T>();
-
+            IQueryable<T> query = _context.Set<T>();
             if (includes != null)
-            {
                 query = includes(query);
-            }
 
-            if (condition != null)
-            {
-                return query.Where(condition).ToList();
-            }
-
-            return query.ToList();
+            return condition != null
+                ? await query.Where(condition).ToListAsync()
+                : await query.ToListAsync();
         }
 
-        public string Remove(Guid id)
-        {
-            T table = Context.Set<T>().Find(id);
-            Context.Set<T>().Remove(table);
-            Context.SaveChanges();
-            return "Delete Done";
-        }
-
-        public void RemoveRange(IEnumerable<T> entites)
+        public async Task<string> UpdateAsync(T entity)
         {
             try
             {
-                Context.Set<T>().RemoveRange(entites);
-
+                _context.Entry(entity).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+                return "Update succeeded";
             }
             catch (Exception ex)
             {
-                ex.ToString();
+                return $"Update failed: {ex.Message}";
             }
         }
 
-        #endregion
-
-        #region Generic Controller Test
-
-        public T GetById(Guid id)
+        public async Task<string> UpdatePartialAsync(Guid id, Action<T> updateAction)
         {
-            IQueryable<T> query = Context.Set<T>();
-            return Context.Set<T>().FirstOrDefault();
+            var entity = await _context.Set<T>().FindAsync(id);
+            if (entity == null)
+                return "Entity not found";
+
+            updateAction(entity); // appliquer les modifications
+
+            await _context.SaveChangesAsync();
+            return "Partial update succeeded";
         }
 
-        public IEnumerable<T> GetByID(Guid id)
+
+        public async Task<string> RemoveAsync(Guid id)
         {
+            var entity = await _context.Set<T>().FindAsync(id);
+            if (entity == null)
+                return "Entity not found";
+
+            _context.Set<T>().Remove(entity);
+            await _context.SaveChangesAsync();
+            return "Remove succeeded";
+        }
+
+        public async Task<string> RemoveAsync(T entity)
+        {
+            try
+            {
+                _context.Set<T>().Remove(entity);
+                await _context.SaveChangesAsync();
+                return "Remove succeeded";
+            }
+            catch (Exception ex)
+            {
+                return $"Remove failed: {ex.Message}";
+            }
+        }
+
+        public async Task RemoveRangeAsync(IEnumerable<T> entities)
+        {
+            _context.Set<T>().RemoveRange(entities);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<T>> GetByIdAsync(Guid id)
+        {
+            var entity = await _context.Set<T>().FindAsync(id);
+            return entity != null ? new List<T> { entity } : new List<T>();
+        }
+
+        public Task<IEnumerable<T>> ExecuteStoreQueryAsync(string commandText, params object[] parameters)
+        {
+            // Optional: Implement raw SQL if needed
             throw new NotImplementedException();
         }
 
-        public string Update(T entity)
+        public Task<IEnumerable<T>> ExecuteStoreQueryAsync(
+            string commandText,
+            Func<IQueryable<T>, IIncludableQueryable<T, object>> includes = null)
         {
-            Context.Entry(entity).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-            Context.SaveChanges();
-            return "Update Done";
-        }
-
-        public string Removeobject(T entity)
-        {
-            Context.Set<T>().Remove(entity);
-            Context.SaveChanges();
-            return "delete done";
-        }
-
-        public object Remove(object id)
-        {
+            // Optional: Implement raw SQL with includes if needed
             throw new NotImplementedException();
         }
-        #endregion
     }
 }
