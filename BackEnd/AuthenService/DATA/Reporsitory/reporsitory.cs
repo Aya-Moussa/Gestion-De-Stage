@@ -94,8 +94,10 @@ namespace DATA.Repository
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Email),
                 new Claim(ClaimTypes.Role, user.Role),
-                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
-              };
+                //new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+                new Claim("userId", user.Id.ToString())  // custom claim type for user ID
+  
+            };
 
             var token = new JwtSecurityToken(
                 issuer: issuer,
