@@ -20,6 +20,12 @@ namespace API.Middleware
 
         public async Task InvokeAsync(HttpContext context)
         {
+            Console.WriteLine($"User ID from token: /////////////////////////////////////////////////////////////");
+            // Debug: print all claims to the console
+            foreach (var claim in context.User.Claims)
+            {
+                Console.WriteLine($"Claim Type: {claim.Type}, Value: {claim.Value}");
+            }
             var path = context.Request.Path.Value;
 
             if (path.StartsWith("/swagger") || path.StartsWith("/api/Auth"))
@@ -27,10 +33,15 @@ namespace API.Middleware
                 await _next(context);
                 return;
             }
+            
+            
 
             if (context.User.Identity.IsAuthenticated)
             {
-                var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                //var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var userId = context.User.FindFirst("userId")?.Value;
+
+                Console.WriteLine($"User ID from token: {userId}");
 
                 if (string.IsNullOrWhiteSpace(userId) || !await _userService.UserExistsAsync(userId))
                 {

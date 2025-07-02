@@ -32,9 +32,8 @@ namespace API.Controllers
             _context = context;
         }
 
-        [Authorize(Roles = "RH,Encadrant,Stagiaire")]
         [HttpGet]
-       public async Task<ActionResult<IEnumerable<CandidatureDTO>>> GetCandidatureAsync()
+        public async Task<ActionResult<IEnumerable<CandidatureDTO>>> GetCandidatureAsync()
         {
             var result = await _mediator.Send(
                 new GetAllGenericQuery<Candidature>()

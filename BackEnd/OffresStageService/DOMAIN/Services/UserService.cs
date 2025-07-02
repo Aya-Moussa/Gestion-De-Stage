@@ -21,7 +21,7 @@ namespace DOMAIN.Services
 
             try
             {
-                var response = await _httpClient.GetAsync($"https://localhost:9001/api/User/Exists/{userId}");
+                var response = await _httpClient.GetAsync($"https://localhost:9001/api/User/{userId}");
                 return response.IsSuccessStatusCode;
             }
             catch (Exception ex)

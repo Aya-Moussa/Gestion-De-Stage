@@ -27,6 +27,7 @@ using System.Text;
 using System.Security.Claims;
 using API.Middleware;
 using DOMAIN.Services;
+using Microsoft.Extensions.Options;
 
 namespace OffresStageService
 {
@@ -59,7 +60,9 @@ namespace OffresStageService
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Your API", Version = "v1" });
 
-               
+                // FIX: Prevent schema ID conflict by using full name (namespace + class)
+                c.CustomSchemaIds(type => type.FullName);
+
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Name = "Authorization",
@@ -145,6 +148,49 @@ namespace OffresStageService
             services.AddTransient(typeof(IRequestHandler<DeleteGeneric<Evaluation>, string>), typeof(DeleteGenericHandlers<Evaluation>));
             services.AddTransient(typeof(IRequestHandler<PutGeneric<Evaluation>, string>), typeof(PutGenericHandlers<Evaluation>));
 
+
+            services.AddTransient(typeof(IRequestHandler<GetAllGenericQuery<OffreDeStage>, IEnumerable<OffreDeStage>>), typeof(GetAllGenericHandlers<OffreDeStage>));
+            services.AddTransient(typeof(IRequestHandler<GetGenericQueryById<OffreDeStage>, OffreDeStage>), typeof(GetGenericHandlerById<OffreDeStage>));
+            services.AddTransient(typeof(IRequestHandler<PostGeneric<OffreDeStage>, string>), typeof(AddGenericHandlers<OffreDeStage>));
+            services.AddTransient(typeof(IRequestHandler<DeleteGeneric<OffreDeStage>, string>), typeof(DeleteGenericHandlers<OffreDeStage>));
+            services.AddTransient(typeof(IRequestHandler<PutGeneric<OffreDeStage>, string>), typeof(PutGenericHandlers<OffreDeStage>));
+
+
+
+            services.AddTransient(typeof(IRequestHandler<GetAllGenericQuery<Stage>, IEnumerable<Stage>>), typeof(GetAllGenericHandlers<Stage>));
+            services.AddTransient(typeof(IRequestHandler<GetGenericQueryById<Stage>, Stage>), typeof(GetGenericHandlerById<Stage>));
+            services.AddTransient(typeof(IRequestHandler<PostGeneric<Stage>, string>), typeof(AddGenericHandlers<Stage>));
+            services.AddTransient(typeof(IRequestHandler<DeleteGeneric<Stage>, string>), typeof(DeleteGenericHandlers<Stage>));
+            services.AddTransient(typeof(IRequestHandler<PutGeneric<Stage>, string>), typeof(PutGenericHandlers<Stage>));
+
+            services.AddTransient(typeof(IRequestHandler<GetAllGenericQuery<Entretien>, IEnumerable<Entretien>>), typeof(GetAllGenericHandlers<Entretien>));
+            services.AddTransient(typeof(IRequestHandler<GetGenericQueryById<Entretien>, Entretien>), typeof(GetGenericHandlerById<Entretien>));
+            services.AddTransient(typeof(IRequestHandler<PostGeneric<Entretien>, string>), typeof(AddGenericHandlers<Entretien>));
+            services.AddTransient(typeof(IRequestHandler<DeleteGeneric<Entretien>, string>), typeof(DeleteGenericHandlers<Entretien>));
+            services.AddTransient(typeof(IRequestHandler<PutGeneric<Entretien>, string>), typeof(PutGenericHandlers<Entretien>));
+
+
+            services.AddTransient(typeof(IRequestHandler<GetAllGenericQuery<JournalDeBord>, IEnumerable<JournalDeBord>>), typeof(GetAllGenericHandlers<JournalDeBord>));
+            services.AddTransient(typeof(IRequestHandler<GetGenericQueryById<JournalDeBord>, JournalDeBord>), typeof(GetGenericHandlerById<JournalDeBord>));
+            services.AddTransient(typeof(IRequestHandler<PostGeneric<JournalDeBord>, string>), typeof(AddGenericHandlers<JournalDeBord>));
+            services.AddTransient(typeof(IRequestHandler<DeleteGeneric<JournalDeBord>, string>), typeof(DeleteGenericHandlers<JournalDeBord>));
+            services.AddTransient(typeof(IRequestHandler<PutGeneric<JournalDeBord>, string>), typeof(PutGenericHandlers<JournalDeBord>));
+
+            services.AddTransient(typeof(IRequestHandler<GetAllGenericQuery<CommentaireEncadrant>, IEnumerable<CommentaireEncadrant>>), typeof(GetAllGenericHandlers<CommentaireEncadrant>));
+            services.AddTransient(typeof(IRequestHandler<GetGenericQueryById<CommentaireEncadrant>, CommentaireEncadrant>), typeof(GetGenericHandlerById<CommentaireEncadrant>));
+            services.AddTransient(typeof(IRequestHandler<PostGeneric<CommentaireEncadrant>, string>), typeof(AddGenericHandlers<CommentaireEncadrant>));
+            services.AddTransient(typeof(IRequestHandler<DeleteGeneric<CommentaireEncadrant>, string>), typeof(DeleteGenericHandlers<CommentaireEncadrant>));
+            services.AddTransient(typeof(IRequestHandler<PutGeneric<CommentaireEncadrant>, string>), typeof(PutGenericHandlers<CommentaireEncadrant>));
+
+
+            services.AddTransient(typeof(IRequestHandler<GetAllGenericQuery<Candidature>, IEnumerable<Candidature>>), typeof(GetAllGenericHandlers<Candidature>));
+            services.AddTransient(typeof(IRequestHandler<GetGenericQueryById<Candidature>, Candidature>), typeof(GetGenericHandlerById<Candidature>));
+            services.AddTransient(typeof(IRequestHandler<PostGeneric<Candidature>, string>), typeof(AddGenericHandlers<Candidature>));
+            services.AddTransient(typeof(IRequestHandler<DeleteGeneric<Candidature>, string>), typeof(DeleteGenericHandlers<Candidature>));
+            services.AddTransient(typeof(IRequestHandler<PutGeneric<Candidature>, string>), typeof(PutGenericHandlers<Candidature>));
+
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -173,6 +219,7 @@ namespace OffresStageService
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
                 c.RoutePrefix = string.Empty; 
             });
+            
         }
     }
 }
