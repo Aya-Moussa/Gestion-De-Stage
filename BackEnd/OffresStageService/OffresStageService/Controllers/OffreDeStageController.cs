@@ -33,7 +33,7 @@ namespace API.Controllers
             _context = context;
         }
 
-        //[Authorize(Roles = "RH,Encadrant,Stagiaire")]
+        [Authorize(Roles = "RH,Encadrant,Stagiaire")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<OffreDeStageDTO>>> GetOffreStageAsync()
         {

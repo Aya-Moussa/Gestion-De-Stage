@@ -13,7 +13,7 @@ namespace DOMAIN.DTOs
         public string Commentaire { get; set; }
         public DateTime DateEvaluation { get; set; }
 
-        public bool AttestationAffected { get; set; };
+        public bool AttestationAffected { get; set; }
 
     }
 }
