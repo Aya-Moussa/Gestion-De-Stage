@@ -12,6 +12,7 @@ namespace DOMAIN.Models
         public int NoteComportementale { get; set; }
         public string Commentaire { get; set; }
         public DateTime DateEvaluation { get; set; }
+        public bool AttestationAffected { get; set; } = false;
 
         public Stage Stage { get; set; }
     }

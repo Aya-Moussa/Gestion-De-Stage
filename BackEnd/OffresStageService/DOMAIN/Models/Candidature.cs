@@ -18,6 +18,8 @@ namespace DOMAIN.Models
         public Guid OffreId { get; set; }
         public DateTime DateCandidature { get; set; }
         public StatutCandidature Statut { get; set; }
+
+        public string LienDriveCV { get; set; }
         public OffreDeStage Offre { get; set; }
     }
 }

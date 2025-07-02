@@ -10,6 +10,8 @@ namespace DOMAIN.Models
         public Guid StagiaireId { get; set; }
         public DateTime Date { get; set; }
         public string Contenu { get; set; }
+        public bool valider { get; set; }
+
 
         public ICollection<CommentaireEncadrant> Commentaires { get; set; }
     }

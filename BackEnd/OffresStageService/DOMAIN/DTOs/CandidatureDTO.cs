@@ -16,6 +16,8 @@ namespace DOMAIN.DTOs
         public Guid StagiaireId { get; set; }
         public Guid OffreId { get; set; }
         public DateTime DateCandidature { get; set; }
+        public string LienDriveCV { get; set; }
+
         public StatutCandidature Statut { get; set; }
     }
 }
